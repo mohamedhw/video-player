@@ -1,38 +1,39 @@
-"use strict";
+// "use strict";
+// Object.defineProperty(exports, "__esModule", { value: true });
 class VideoPlayer {
-    constructor(options) {
-        this.video = null;
-        this.playBtn = null;
-        this.forwardBtn = null;
-        this.backwardBtn = null;
-        this.playback = null;
-        this.currentTime = null;
-        this.duration = null;
-        this.volumeInput = null;
-        this.muteBtn = null;
-        this.settingsOptions = null;
-        this.settingBtn = null;
-        this.fullScreen = null;
-        this.parentId = options.parentId;
-        this.src = options.src;
-        options.skipAmount ? this.skipAmount = options.skipAmount : this.skipAmount = 10;
-        options.width ? this.width = options.width : this.width = "800px";
-        options.theme ? this.theme = options.theme : this.theme = "rgba(0, 0, 0, 0.7)";
-        options.btnColor ? this.btnColor = options.btnColor : this.btnColor = "#ccc";
-        options.fontSize ? this.fontSize = options.fontSize : this.fontSize = "20px";
-        this.initialize();
+  constructor(options) {
+    this.video = null;
+    this.playBtn = null;
+    this.forwardBtn = null;
+    this.backwardBtn = null;
+    this.playback = null;
+    this.currentTime = null;
+    this.duration = null;
+    this.volumeInput = null;
+    this.muteBtn = null;
+    this.settingsOptions = null;
+    this.settingBtn = null;
+    this.fullScreen = null;
+    this.parentId = options.parentId;
+    this.src = options.src;
+    options.skipAmount ? this.skipAmount = options.skipAmount : this.skipAmount = 10;
+    options.width ? this.width = options.width : this.width = "800px";
+    options.theme ? this.theme = options.theme : this.theme = "rgba(0, 0, 0, 0.7)";
+    options.btnColor ? this.btnColor = options.btnColor : this.btnColor = "#ccc";
+    options.fontSize ? this.fontSize = options.fontSize : this.fontSize = "20px";
+    this.initialize();
+  }
+  initialize() {
+    this.addVideoHtml();
+    this.addPlayerStyles();
+  }
+  addVideoHtml() {
+    const parent = document.getElementById(this.parentId);
+    if (!parent) {
+      console.error("Parent element not found!");
+      return;
     }
-    initialize() {
-        this.addVideoHtml();
-        this.addPlayerStyles();
-    }
-    addVideoHtml() {
-        const parent = document.getElementById(this.parentId);
-        if (!parent) {
-            console.error("Parent element not found!");
-            return;
-        }
-        parent.innerHTML = `
+    parent.innerHTML = `
       <video src="${this.src}" class="object-fit-contain" preload="auto"></video>
       <div class="controls-container">
         <div class="playback-cont">
@@ -61,140 +62,140 @@ class VideoPlayer {
           </div>
         </div>
       </div>`;
-        this.video = parent.querySelector("video");
-        this.playBtn = parent.querySelector("#play-btn");
-        this.backwardBtn = parent.querySelector("#backward-btn");
-        this.forwardBtn = parent.querySelector("#forward-btn");
-        this.playback = parent.querySelector("#playback");
-        this.currentTime = parent.querySelector("#current-time");
-        this.duration = parent.querySelector("#duration");
-        this.volumeInput = parent.querySelector("#volume");
-        this.muteBtn = parent.querySelector("#mute-btn");
-        this.settingsOptions = parent.querySelector("#settings-options");
-        this.settingBtn = parent.querySelector("#setting-btn");
-        this.fullScreen = parent.querySelector("#fullscreen-btn");
-        this.video.addEventListener('loadedmetadata', () => {
-            if (!this.video || !this.playback || !this.duration)
-                return;
-            const totalSeconds = Math.floor(this.video.duration);
-            this.playback.max = totalSeconds.toString();
-            this.duration.textContent = this.formatTime(totalSeconds);
-            this.playback.disabled = false;
-        });
-        this.video.addEventListener('timeupdate', () => {
-            if (!this.video || !this.playback || !this.currentTime)
-                return;
-            const currentSeconds = Math.floor(this.video.currentTime);
-            this.currentTime.textContent = this.formatTime(currentSeconds);
-            this.playback.value = currentSeconds.toString();
-        });
-        if (this.playback) {
-            this.playback.addEventListener('input', () => {
-                if (!this.video || !this.playback || !this.currentTime)
-                    return;
-                const newTime = parseInt(this.playback.value);
-                this.video.currentTime = newTime;
-                this.currentTime.textContent = this.formatTime(newTime);
-            });
-        }
-        this.video.addEventListener("dblclick", () => this.toggleFullscreen());
-        this.video.addEventListener('click', () => this.togglePlay());
-        this.playBtn.addEventListener('click', () => this.togglePlay());
-        this.volumeInput.addEventListener('input', () => this.updateVolume());
-        this.muteBtn.addEventListener('click', () => {
-            this.toggleMute();
-        });
-        this.fullScreen.addEventListener('click', () => this.toggleFullscreen());
-        this.forwardBtn.addEventListener('click', () => this.skip(this.skipAmount));
-        this.backwardBtn.addEventListener('click', () => this.skip(-this.skipAmount));
-        this.settingBtn.addEventListener('click', () => this.showOptians());
-        const speedOptions = this.settingsOptions.querySelectorAll("p");
-        speedOptions.forEach(option => {
-            option.addEventListener("click", () => {
-                const newSpeed = parseFloat(option.getAttribute("data-speed") || "1");
-                this.changeSpeed(newSpeed);
-            });
-        });
-    }
-    showOptians() {
-        var _a;
-        (_a = this.settingsOptions) === null || _a === void 0 ? void 0 : _a.classList.toggle("show-settings");
-    }
-    changeSpeed(newSpeed) {
-        if (!this.video)
-            return;
-        this.video.playbackRate = newSpeed;
-    }
-    togglePlay() {
-        if (!this.video || !this.playBtn)
-            return;
-        if (document.fullscreenElement)
-            return;
-        if (this.video.paused) {
-            this.video.play();
-            this.playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
-        }
-        else {
-            this.video.pause();
-            this.playBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
-        }
-    }
-    skip(seconds) {
-        if (!this.video)
-            return;
-        let newTime = this.video.currentTime + seconds;
-        if (newTime < 0) {
-            newTime = 0;
-        }
-        else if (newTime > this.video.duration) {
-            newTime = this.video.duration;
-        }
+    this.video = parent.querySelector("video");
+    this.playBtn = parent.querySelector("#play-btn");
+    this.backwardBtn = parent.querySelector("#backward-btn");
+    this.forwardBtn = parent.querySelector("#forward-btn");
+    this.playback = parent.querySelector("#playback");
+    this.currentTime = parent.querySelector("#current-time");
+    this.duration = parent.querySelector("#duration");
+    this.volumeInput = parent.querySelector("#volume");
+    this.muteBtn = parent.querySelector("#mute-btn");
+    this.settingsOptions = parent.querySelector("#settings-options");
+    this.settingBtn = parent.querySelector("#setting-btn");
+    this.fullScreen = parent.querySelector("#fullscreen-btn");
+    this.video.addEventListener('loadedmetadata', () => {
+      if (!this.video || !this.playback || !this.duration)
+        return;
+      const totalSeconds = Math.floor(this.video.duration);
+      this.playback.max = totalSeconds.toString();
+      this.duration.textContent = this.formatTime(totalSeconds);
+      this.playback.disabled = false;
+    });
+    this.video.addEventListener('timeupdate', () => {
+      if (!this.video || !this.playback || !this.currentTime)
+        return;
+      const currentSeconds = Math.floor(this.video.currentTime);
+      this.currentTime.textContent = this.formatTime(currentSeconds);
+      this.playback.value = currentSeconds.toString();
+    });
+    if (this.playback) {
+      this.playback.addEventListener('input', () => {
+        if (!this.video || !this.playback || !this.currentTime)
+          return;
+        const newTime = parseInt(this.playback.value);
         this.video.currentTime = newTime;
+        this.currentTime.textContent = this.formatTime(newTime);
+      });
     }
-    toggleMute() {
-        if (!this.video || !this.muteBtn)
-            return;
-        if (!this.volumeInput)
-            return;
-        if (this.video.muted) {
-            this.volumeInput.value = this.video.volume.toString();
-        }
-        else {
-            this.volumeInput.value = '0';
-        }
-        this.video.muted = !this.video.muted;
-        this.muteBtn.innerHTML = this.video.muted
-            ? '<i class="bi bi-volume-mute-fill"></i>'
-            : '<i class="bi bi-volume-up-fill"></i>';
+    this.video.addEventListener("dblclick", () => this.toggleFullscreen());
+    this.video.addEventListener('click', () => this.togglePlay());
+    this.playBtn.addEventListener('click', () => this.togglePlay());
+    this.volumeInput.addEventListener('input', () => this.updateVolume());
+    this.muteBtn.addEventListener('click', () => {
+      this.toggleMute();
+    });
+    this.fullScreen.addEventListener('click', () => this.toggleFullscreen());
+    this.forwardBtn.addEventListener('click', () => this.skip(this.skipAmount));
+    this.backwardBtn.addEventListener('click', () => this.skip(-this.skipAmount));
+    this.settingBtn.addEventListener('click', () => this.showOptians());
+    const speedOptions = this.settingsOptions.querySelectorAll("p");
+    speedOptions.forEach(option => {
+      option.addEventListener("click", () => {
+        const newSpeed = parseFloat(option.getAttribute("data-speed") || "1");
+        this.changeSpeed(newSpeed);
+      });
+    });
+  }
+  showOptians() {
+    var _a;
+    (_a = this.settingsOptions) === null || _a === void 0 ? void 0 : _a.classList.toggle("show-settings");
+  }
+  changeSpeed(newSpeed) {
+    if (!this.video)
+      return;
+    this.video.playbackRate = newSpeed;
+  }
+  togglePlay() {
+    if (!this.video || !this.playBtn)
+      return;
+    if (document.fullscreenElement)
+      return;
+    if (this.video.paused) {
+      this.video.play();
+      this.playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
     }
-    updateVolume() {
-        if (!this.video || !this.volumeInput)
-            return;
-        this.video.volume = parseFloat(this.volumeInput.value);
+    else {
+      this.video.pause();
+      this.playBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
     }
-    formatTime(seconds) {
-        if (isNaN(seconds) || !isFinite(seconds)) {
-            return "00:00";
-        }
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = Math.floor(seconds % 60);
-        // Format minutes and seconds as two digits without padStart
-        const minuteStr = minutes < 10 ? "0" + minutes : minutes.toString();
-        const secondStr = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds.toString();
-        return `${minuteStr}:${secondStr}`;
+  }
+  skip(seconds) {
+    if (!this.video)
+      return;
+    let newTime = this.video.currentTime + seconds;
+    if (newTime < 0) {
+      newTime = 0;
     }
-    toggleFullscreen() {
-        if (!document.fullscreenElement) {
-            if (!this.video)
-                return;
-            this.video.requestFullscreen();
-        }
-        else {
-            document.exitFullscreen();
-        }
+    else if (newTime > this.video.duration) {
+      newTime = this.video.duration;
     }
-    addPlayerStyles() {
-        const css = `
+    this.video.currentTime = newTime;
+  }
+  toggleMute() {
+    if (!this.video || !this.muteBtn)
+      return;
+    if (!this.volumeInput)
+      return;
+    if (this.video.muted) {
+      this.volumeInput.value = this.video.volume.toString();
+    }
+    else {
+      this.volumeInput.value = '0';
+    }
+    this.video.muted = !this.video.muted;
+    this.muteBtn.innerHTML = this.video.muted
+      ? '<i class="bi bi-volume-mute-fill"></i>'
+      : '<i class="bi bi-volume-up-fill"></i>';
+  }
+  updateVolume() {
+    if (!this.video || !this.volumeInput)
+      return;
+    this.video.volume = parseFloat(this.volumeInput.value);
+  }
+  formatTime(seconds) {
+    if (isNaN(seconds) || !isFinite(seconds)) {
+      return "00:00";
+    }
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    // Format minutes and seconds as two digits without padStart
+    const minuteStr = minutes < 10 ? "0" + minutes : minutes.toString();
+    const secondStr = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds.toString();
+    return `${minuteStr}:${secondStr}`;
+  }
+  toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      if (!this.video)
+        return;
+      this.video.requestFullscreen();
+    }
+    else {
+      document.exitFullscreen();
+    }
+  }
+  addPlayerStyles() {
+    const css = `
     .video-container {
       position: relative;
       display: flex;
@@ -359,12 +360,15 @@ class VideoPlayer {
           background: ${this.theme};
     }
   `;
-        const bootstrapIcons = document.createElement("link");
-        bootstrapIcons.setAttribute("href", "../node_modules/bootstrap-icons/font/bootstrap-icons.min.css");
-        bootstrapIcons.setAttribute("rel", "stylesheet");
-        document.head.appendChild(bootstrapIcons);
-        const styleTag = document.createElement("style");
-        styleTag.textContent = css;
-        document.head.appendChild(styleTag);
-    }
+    const bootstrapIcons = document.createElement("link");
+    bootstrapIcons.setAttribute("href", "https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css");
+    bootstrapIcons.setAttribute("rel", "stylesheet");
+    document.head.appendChild(bootstrapIcons);
+    const styleTag = document.createElement("style");
+    styleTag.textContent = css;
+    document.head.appendChild(styleTag);
+  }
 }
+
+export default VideoPlayer;
+

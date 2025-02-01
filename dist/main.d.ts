@@ -40,3 +40,4 @@ declare class VideoPlayer {
     private toggleFullscreen;
     addPlayerStyles(): void;
 }
+export default VideoPlayer;
