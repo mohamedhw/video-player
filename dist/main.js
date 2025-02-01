@@ -204,20 +204,16 @@ class VideoPlayer {
 
     video {
       width: 100%;
-      // border-radius: 5%;
     }
-
     .controls-container {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
       width: 100%;
-      background: ${this.theme};
       color: white;
       align-items: center;
       justify-content: space-between;
-      border-radius: 5px;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -341,7 +337,6 @@ class VideoPlayer {
       transform: translateY(10px);
       pointer-events: none;
       transition: opacity 0.3s ease, transform 0.3s ease;
-      border-radius: 5px;
     }
 
     .show-settings {
@@ -357,8 +352,11 @@ class VideoPlayer {
     i{
       color: ${this.btnColor};
     }
-    i, .playback-cont{
+    i, .playback-cont, .settings-options p {
       font-size: ${this.fontSize};
+    }
+    .controls-container, .settings-options{
+          background: ${this.theme};
     }
   `;
         const bootstrapIcons = document.createElement("link");
@@ -370,4 +368,3 @@ class VideoPlayer {
         document.head.appendChild(styleTag);
     }
 }
-new VideoPlayer({ parentId: "container", width: "800px", src: "../dist/linux2.webm", theme: "red" });
