@@ -34,6 +34,7 @@ class VideoPlayer {
       return;
     }
     parent.innerHTML = `
+    <div class="video-container">
       <video src="${this.src}" class="object-fit-contain" preload="auto"></video>
       <div class="controls-container">
         <div class="playback-cont">
@@ -61,7 +62,8 @@ class VideoPlayer {
             <button id="fullscreen-btn" class="fullscreen-btn" title="Fullscreen"><i class="bi bi-fullscreen"></i></button>
           </div>
         </div>
-      </div>`;
+      </div>
+    </div>`;
     this.video = parent.querySelector("video");
     this.playBtn = parent.querySelector("#play-btn");
     this.backwardBtn = parent.querySelector("#backward-btn");
