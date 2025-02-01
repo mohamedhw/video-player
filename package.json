@@ -1,6 +1,6 @@
 {
   "name": "video-container-lib",
-  "version": "1.0.6",
+  "version": "1.0.11",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "type": "module",
@@ -10,7 +10,6 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "prepare": "npm run clean && npm run build",
     "start": "node dist/main.js",
     "dev": "tsc && node dist/main.js"
   },

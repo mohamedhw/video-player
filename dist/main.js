@@ -35,7 +35,7 @@ class VideoPlayer {
     }
     parent.innerHTML = `
     <div class="video-container">
-      <video src="${this.src}" class="object-fit-contain" preload="auto"></video>
+      <video src="${this.src}" class="object-fit-contain" preload="auto" loop></video>
       <div class="controls-container">
         <div class="playback-cont">
           <span class="time-span" id="current-time">00:00</span>
