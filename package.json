@@ -1,16 +1,37 @@
 {
   "name": "video-container-lib",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "main": "dist/main.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/main.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/main.js"
+  },
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "start": "node dist/index.js",
-    "dev": "tsc && node dist/index.js"
+    "prepare": "npm run clean && npm run build",
+    "start": "node dist/main.js",
+    "dev": "tsc && node dist/main.js"
   },
   "devDependencies": {
     "typescript": "^5.7.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "video",
+    "player",
+    "custom",
+    "html5",
+    "typescript",
+    "video-player"
+  ],
+  "author": "Mohamed Hesham",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohamedhw/video-player"
   }
 }
